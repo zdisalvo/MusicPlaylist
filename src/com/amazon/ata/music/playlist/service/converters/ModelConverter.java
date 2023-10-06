@@ -10,8 +10,19 @@ public class ModelConverter {
      * @return the converted playlist
      */
     public PlaylistModel toPlaylistModel(Playlist playlist) {
+
+        Integer songCount = 0;
+
+        if (playlist.getSongCount() != null) {
+            songCount = playlist.getSongCount();
+        }
+
         return PlaylistModel.builder()
             .withId(playlist.getId())
+                .withName(playlist.getName())
+                .withCustomerId(playlist.getCustomerId())
+                .withSongCount(songCount)
+                .withTags(playlist.getTags())
             .build();
     }
 }

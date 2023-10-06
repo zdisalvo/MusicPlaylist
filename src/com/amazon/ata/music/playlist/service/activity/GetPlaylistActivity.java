@@ -21,13 +21,16 @@ public class GetPlaylistActivity implements RequestHandler<GetPlaylistRequest, G
     private final Logger log = LogManager.getLogger();
     private final PlaylistDao playlistDao;
 
+
     /**
      * Instantiates a new GetPlaylistActivity object.
      *
      * @param playlistDao PlaylistDao to access the playlist table.
      */
     public GetPlaylistActivity(PlaylistDao playlistDao) {
+
         this.playlistDao = playlistDao;
+
     }
 
     /**

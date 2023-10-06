@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class GetPlaylistRequest {
     private String id;
+//    private String name;
 
     public GetPlaylistRequest() {
 
@@ -20,6 +21,15 @@ public class GetPlaylistRequest {
     public void setId(String id) {
         this.id = id;
     }
+
+    //TODO
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     @Override
     public boolean equals(Object o) {
@@ -45,6 +55,7 @@ public class GetPlaylistRequest {
 
     public static final class Builder {
         private String id;
+//        private String name;
 
         private Builder() {
 
@@ -54,6 +65,11 @@ public class GetPlaylistRequest {
             this.id = idToUse;
             return this;
         }
+
+//        public Builder withName(String nameToUse) {
+//            this.name = nameToUse;
+//            return this;
+//        }
 
         public GetPlaylistRequest build() { return new GetPlaylistRequest(this); }
     }
