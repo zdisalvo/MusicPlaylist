@@ -2,40 +2,35 @@ package com.amazon.ata.music.playlist.service.activity;
 
 import com.amazon.ata.music.playlist.service.dynamodb.PlaylistDao;
 import com.amazon.ata.music.playlist.service.dynamodb.models.Playlist;
-import com.amazon.ata.music.playlist.service.models.requests.GetPlaylistRequest;
-import com.amazon.ata.music.playlist.service.models.results.GetPlaylistResult;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import org.checkerframework.checker.units.qual.C;
+import com.amazon.ata.music.playlist.service.models.requests.CreatePlaylistRequest;
+import com.amazon.ata.music.playlist.service.models.results.CreatePlaylistResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import javax.naming.Context;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class GetPlaylistActivityTest {
+public class CreatePlaylistActivityTest {
+
     @Mock
     private PlaylistDao playlistDao;
 
-    private GetPlaylistActivity getPlaylistActivity;
+    private CreatePlaylistActivity createPlaylistActivity;
 
     @BeforeEach
     public void setUp() {
         initMocks(this);
-        getPlaylistActivity = new GetPlaylistActivity(playlistDao);
+        createPlaylistActivity = new CreatePlaylistActivity(playlistDao);
     }
 
     @Test
-    public void handleRequest_savedPlaylistFound_returnsPlaylistModelInResult() {
-        // GIVEN
-        String expectedId = "expectedId";
+    public void handleRequest_newPlaylistIsSaved_andReturned() {
+
         String expectedName = "expectedName";
         String expectedCustomerId = "expectedCustomerId";
         int expectedSongCount = 0;
@@ -43,22 +38,23 @@ public class GetPlaylistActivityTest {
         expectedTags.add("tags");
 
         Playlist playlist = new Playlist();
-        playlist.setId(expectedId);
         playlist.setName(expectedName);
         playlist.setCustomerId(expectedCustomerId);
         playlist.setSongCount(expectedSongCount);
-        playlist.setTags(Sets.newHashSet(expectedTags));
+        playlist.setTags(expectedTags);
 
-        when(playlistDao.getPlaylist(expectedId)).thenReturn(playlist);
+        when(playlistDao.savePlaylist(playlist)).thenReturn(playlist);
 
-        GetPlaylistRequest request = GetPlaylistRequest.builder()
-            .withId(expectedId)
-            .build();
-        // WHEN
-        GetPlaylistResult result = getPlaylistActivity.handleRequest(request, null);
+        CreatePlaylistRequest request = CreatePlaylistRequest.builder()
+                .withCustomerId(expectedCustomerId)
+                .withName(expectedName)
+                .withTags(expectedTags)
+                .build();
+        //WHEN
+        CreatePlaylistResult result = createPlaylistActivity.handleRequest(request, null);
 
-        // THEN
-        assertEquals(expectedId, result.getPlaylist().getId());
+        //THEN
+
         assertEquals(expectedName, result.getPlaylist().getName());
         assertEquals(expectedCustomerId, result.getPlaylist().getCustomerId());
         assertEquals(expectedSongCount, result.getPlaylist().getSongCount());
