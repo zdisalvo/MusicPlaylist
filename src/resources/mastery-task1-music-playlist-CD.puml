@@ -54,7 +54,18 @@ class PlaylistNotFoundException {
 class AlbumTrackNotFoundException {
 }
 
-class InvalidAttributeValueException {
+
+
+class RuntimeException {
+}
+
+class InvalidRequestException extends RuntimeException{
+}
+
+class InvalidAttributeValueException extends InvalidRequestException{
+}
+
+class InvalidAttributeChangeException extends InvalidRequestException{
 }
 
 Playlist *-- AlbumTrack
@@ -65,5 +76,9 @@ GetPlaylistActivity *-- PlaylistDao
 GetPlaylistSongsActivity *-- PlaylistDao
 UpdatePlaylistActivity *-- PlaylistDao
 
+InvalidRequestException <|-- InvalidAttributeChangeException
+InvalidRequestException <|-- InvalidAttributeValueException
+
+RuntimeException --|> InvalidRequestException
 
 @enduml
