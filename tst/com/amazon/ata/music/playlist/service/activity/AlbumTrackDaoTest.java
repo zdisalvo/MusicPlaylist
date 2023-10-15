@@ -36,15 +36,17 @@ public class AlbumTrackDaoTest {
 
         //GIVEN
         String asin = "1234";
+        Integer trackNumber = 2;
 
         AlbumTrack expected = new AlbumTrack();
         expected.setAsin(asin);
+        expected.setTrackNumber(trackNumber);
 
         //WHEN
 
-        when(albumTrackDao.getAlbumTrack(asin)).thenReturn(expected);
+        when(albumTrackDao.getAlbumTrack(asin, trackNumber)).thenReturn(expected);
 
-        AlbumTrack result = albumTrackDao.getAlbumTrack(asin);
+        AlbumTrack result = albumTrackDao.getAlbumTrack(asin, trackNumber);
 
         //THEN
 

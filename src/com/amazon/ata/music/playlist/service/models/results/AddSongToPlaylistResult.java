@@ -2,6 +2,7 @@ package com.amazon.ata.music.playlist.service.models.results;
 
 import com.amazon.ata.music.playlist.service.models.SongModel;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class AddSongToPlaylistResult {
@@ -22,9 +23,9 @@ public class AddSongToPlaylistResult {
     public static Builder builder() {return new Builder();}
 
     public static final class Builder {
-        private List<SongModel> songList;
+        private LinkedList<SongModel> songList;
 
-        public Builder withSongList(List<SongModel> songListToUse) {
+        public Builder withSongList(LinkedList<SongModel> songListToUse) {
             this.songList = songListToUse;
             return this;
         }
