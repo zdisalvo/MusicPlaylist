@@ -1,5 +1,9 @@
 package com.amazon.ata.music.playlist.service.activity;
 
+import com.amazon.ata.music.playlist.service.converters.ModelConverter;
+import com.amazon.ata.music.playlist.service.dynamodb.models.AlbumTrack;
+import com.amazon.ata.music.playlist.service.dynamodb.models.Playlist;
+import com.amazon.ata.music.playlist.service.exceptions.PlaylistNotFoundException;
 import com.amazon.ata.music.playlist.service.models.requests.GetPlaylistSongsRequest;
 import com.amazon.ata.music.playlist.service.models.results.GetPlaylistSongsResult;
 import com.amazon.ata.music.playlist.service.models.SongModel;
@@ -12,6 +16,8 @@ import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Implementation of the GetPlaylistSongsActivity for the MusicPlaylistService's GetPlaylistSongs API.
@@ -46,8 +52,28 @@ public class GetPlaylistSongsActivity implements RequestHandler<GetPlaylistSongs
     public GetPlaylistSongsResult handleRequest(final GetPlaylistSongsRequest getPlaylistSongsRequest, Context context) {
         log.info("Received GetPlaylistSongsRequest {}", getPlaylistSongsRequest);
 
+        String playlistId = getPlaylistSongsRequest.getId();
+        Playlist playlist;
+
+        if (playlistDao.getPlaylist(playlistId) == null) {
+            throw new PlaylistNotFoundException(String.format("The playlist with ID %s does not exist", playlistId));
+        } else {
+            playlist = playlistDao.getPlaylist(playlistId);
+        }
+
+        List<AlbumTrack> songList = playlist.getSongList();
+
+    //TODO - Building LinkedList of SongModels
+        LinkedList<SongModel> songModelLinkedList = new LinkedList<>();
+        for (AlbumTrack track : songList) {
+            SongModel songModelTrack = new ModelConverter().toSongModel(track);
+            songModelLinkedList.addLast(songModelTrack);
+        }
+
+
+
         return GetPlaylistSongsResult.builder()
-                .withSongList(Collections.singletonList(new SongModel()))
+                .withSongList(songModelLinkedList)
                 .build();
     }
 }

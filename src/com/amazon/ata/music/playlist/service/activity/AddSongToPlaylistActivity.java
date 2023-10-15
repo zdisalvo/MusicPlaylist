@@ -83,7 +83,7 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
         }
 
         //TODO not needed?
-        //playlist.setSongCount(playlist.getSongCount() + 1);
+        playlist.setSongCount(songLinkedList.size());
 
         //PlaylistModel playlistModel = new ModelConverter().toPlaylistModel(playlist);
         //SongModel songModel = new ModelConverter().toSongModel(albumTrack);
