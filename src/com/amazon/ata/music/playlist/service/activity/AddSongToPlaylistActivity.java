@@ -78,7 +78,11 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
             for (AlbumTrack track : songList) {
                 songLinkedList.addLast(track);
             }
-            songLinkedList.addLast(albumTrack);
+            if (addSongToPlaylistRequest.isQueueNext()) {
+                songLinkedList.addFirst(albumTrack);
+            } else {
+                songLinkedList.addLast(albumTrack);
+            }
             playlist.setSongList(songLinkedList);
         }
 

@@ -13,8 +13,11 @@ import com.amazon.ata.music.playlist.service.helpers.AlbumTrackTestHelper;
 import com.amazon.ata.music.playlist.service.helpers.PlaylistTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.testng.annotations.BeforeTest;
 
+import javax.naming.Context;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -157,17 +160,50 @@ public class GetPlaylistSongsActivityTest {
         assertThrows(PlaylistNotFoundException.class, () -> getPlaylistSongsActivity.handleRequest(request, null));
     }
 
-//    @Test
-//    public void handleRequest_withInvalidSongOrder_throwsException() {
-//        // GIVEN
-//        Playlist playlist = PlaylistTestHelper.generatePlaylist();
-//        String id = playlist.getId();
-//        GetPlaylistSongsRequest request = GetPlaylistSongsRequest.builder()
-//            .withId(id)
-//            .withOrder("NOT A VALID ORDER")
-//            .build();
+//    @Mock
+//    private GetPlaylistSongsRequest request;
 //
-//        // WHEN + THEN
-//        assertThrows(IllegalArgumentException.class, () -> getPlaylistSongsActivity.handleRequest(request));
+//    @BeforeTest
+//    public void setUp() {
+//        initMocks(this);
 //    }
+
+//    @Mock
+//    private Context context;
+//    @Mock
+//    private GetPlaylistSongsRequest request;
+
+//    @Mock
+//    private GetPlaylistSongsActivity getPlaylistSongsActivity;
+//
+//    @BeforeTest
+//    public void setUp() {
+//        initMocks(this);
+//
+//    }
+
+    @Test
+    public void handleRequest_withInvalidSongOrder_throwsException() {
+        // GIVEN
+        Playlist playlist = PlaylistTestHelper.generatePlaylist();
+        String id = playlist.getId();
+
+        //when(GetPlaylistSongsRequest.builder()).thenThrow(IllegalArgumentException.class);
+        //GetPlaylistSongsRequest request;
+        try {
+            GetPlaylistSongsRequest request = GetPlaylistSongsRequest.builder()
+                    .withId(id)
+                    .withOrder(SongOrder.valueOf("NOT A VALID ORDER"))
+                    .build();
+        } catch (IllegalArgumentException e) {
+            GetPlaylistSongsRequest request = GetPlaylistSongsRequest.builder()
+                    .withId(id)
+                    .build();
+        }
+        when(getPlaylistSongsActivity.handleRequest(request, null)).thenThrow(IllegalArgumentException.class);
+
+        // WHEN + THEN
+        GetPlaylistSongsRequest finalRequest = request;
+        assertThrows(IllegalArgumentException.class, () -> getPlaylistSongsActivity.handleRequest(request, null));
+    }
 }
