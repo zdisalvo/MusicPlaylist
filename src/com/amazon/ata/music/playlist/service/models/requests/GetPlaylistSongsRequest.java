@@ -76,12 +76,8 @@ public class GetPlaylistSongsRequest {
         }
 
         public Builder withOrder(SongOrder orderToUse) {
-            try {
                 this.order = orderToUse;
                 return this;
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Invalid order request");
-            }
         }
 
         public GetPlaylistSongsRequest build() { return new GetPlaylistSongsRequest(this);

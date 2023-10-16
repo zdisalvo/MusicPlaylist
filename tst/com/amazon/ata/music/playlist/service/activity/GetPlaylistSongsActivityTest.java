@@ -73,46 +73,46 @@ public class GetPlaylistSongsActivityTest {
                    "Expected song list to be empty but was " + result.getSongList());
     }
 
-//    @Test
-//    void handleRequest_withDefaultSongOrder_returnsDefaultOrderedPlaylistSongs() {
-//        // GIVEN
-//        Playlist playlist = PlaylistTestHelper.generatePlaylistWithNAlbumTracks(10);
-//        String playlistId = playlist.getId();
-//
-//        GetPlaylistSongsRequest request = GetPlaylistSongsRequest.builder()
-//                                              .withId(playlistId)
-//                                              .withOrder(SongOrder.DEFAULT)
-//                                              .build();
-//        when(playlistDao.getPlaylist(playlistId)).thenReturn(playlist);
-//
-//        // WHEN
-//        GetPlaylistSongsResult result = getPlaylistSongsActivity.handleRequest(request, null);
-//
-//        // THEN
-//        AlbumTrackTestHelper.assertAlbumTracksEqualSongModels(playlist.getSongList(), result.getSongList());
-//    }
-//
-//    @Test
-//    void handleRequest_withReversedSongOrder_returnsReversedPlaylistSongs() {
-//        // GIVEN
-//        Playlist playlist = PlaylistTestHelper.generatePlaylistWithNAlbumTracks(9);
-//        String playlistId = playlist.getId();
-//        List<AlbumTrack> reversedAlbumTracks = new LinkedList<>(playlist.getSongList());
-//        Collections.reverse(reversedAlbumTracks);
-//
-//        GetPlaylistSongsRequest request = GetPlaylistSongsRequest.builder()
-//                                              .withId(playlistId)
-//                                              .withOrder(SongOrder.REVERSED)
-//                                              .build();
-//        when(playlistDao.getPlaylist(playlistId)).thenReturn(playlist);
-//
-//        // WHEN
-//        GetPlaylistSongsResult result = getPlaylistSongsActivity.handleRequest(request, null);
-//
-//        // THEN
-//        AlbumTrackTestHelper.assertAlbumTracksEqualSongModels(reversedAlbumTracks, result.getSongList());
-//    }
-//
+    @Test
+    void handleRequest_withDefaultSongOrder_returnsDefaultOrderedPlaylistSongs() {
+        // GIVEN
+        Playlist playlist = PlaylistTestHelper.generatePlaylistWithNAlbumTracks(10);
+        String playlistId = playlist.getId();
+
+        GetPlaylistSongsRequest request = GetPlaylistSongsRequest.builder()
+                                              .withId(playlistId)
+                                              .withOrder(SongOrder.DEFAULT)
+                                              .build();
+        when(playlistDao.getPlaylist(playlistId)).thenReturn(playlist);
+
+        // WHEN
+        GetPlaylistSongsResult result = getPlaylistSongsActivity.handleRequest(request, null);
+
+        // THEN
+        AlbumTrackTestHelper.assertAlbumTracksEqualSongModels(playlist.getSongList(), result.getSongList());
+    }
+
+    @Test
+    void handleRequest_withReversedSongOrder_returnsReversedPlaylistSongs() {
+        // GIVEN
+        Playlist playlist = PlaylistTestHelper.generatePlaylistWithNAlbumTracks(9);
+        String playlistId = playlist.getId();
+        List<AlbumTrack> reversedAlbumTracks = new LinkedList<>(playlist.getSongList());
+        Collections.reverse(reversedAlbumTracks);
+
+        GetPlaylistSongsRequest request = GetPlaylistSongsRequest.builder()
+                                              .withId(playlistId)
+                                              .withOrder(SongOrder.REVERSED)
+                                              .build();
+        when(playlistDao.getPlaylist(playlistId)).thenReturn(playlist);
+
+        // WHEN
+        GetPlaylistSongsResult result = getPlaylistSongsActivity.handleRequest(request, null);
+
+        // THEN
+        AlbumTrackTestHelper.assertAlbumTracksEqualSongModels(reversedAlbumTracks, result.getSongList());
+    }
+
 //    @Test
 //    void handleRequest_withShuffledSongOrder_returnsSongsInAnyOrder() {
 //        Playlist playlist = PlaylistTestHelper.generatePlaylistWithNAlbumTracks(8);
@@ -173,13 +173,27 @@ public class GetPlaylistSongsActivityTest {
 //    @Mock
 //    private GetPlaylistSongsRequest request;
 
+    @Mock
+    private GetPlaylistSongsActivity getPlaylistSongsActivity2;
+
+    @Mock
+    private GetPlaylistSongsRequest request;
+
+    @BeforeTest
+    public void setUp() {
+        initMocks(this);
+
+    }
+
 //    @Mock
-//    private GetPlaylistSongsActivity getPlaylistSongsActivity;
+//    private GetPlaylistSongsRequest request;
+//
+//    @Mock
+//    private SongOrder order;
 //
 //    @BeforeTest
 //    public void setUp() {
 //        initMocks(this);
-//
 //    }
 
     @Test
@@ -188,22 +202,19 @@ public class GetPlaylistSongsActivityTest {
         Playlist playlist = PlaylistTestHelper.generatePlaylist();
         String id = playlist.getId();
 
-        //when(GetPlaylistSongsRequest.builder()).thenThrow(IllegalArgumentException.class);
-        //GetPlaylistSongsRequest request;
-        try {
-            GetPlaylistSongsRequest request = GetPlaylistSongsRequest.builder()
-                    .withId(id)
-                    .withOrder(SongOrder.valueOf("NOT A VALID ORDER"))
-                    .build();
-        } catch (IllegalArgumentException e) {
-            GetPlaylistSongsRequest request = GetPlaylistSongsRequest.builder()
-                    .withId(id)
-                    .build();
-        }
-        when(getPlaylistSongsActivity.handleRequest(request, null)).thenThrow(IllegalArgumentException.class);
+        SongOrder order = null;
+        //= SongOrder.valueOf("NOT A VALID ORDER");
+
+//        when(GetPlaylistSongsRequest.builder().withOrder(order)).thenReturn(GetPlaylistSongsRequest.builder().withId(id));
+//
+//            GetPlaylistSongsRequest request = GetPlaylistSongsRequest.builder()
+//                    .withId(id)
+//                    .withOrder(order)
+//                    .build();
+
+        when(getPlaylistSongsActivity2.handleRequest(request, null)).thenThrow(IllegalArgumentException.class);
 
         // WHEN + THEN
-        GetPlaylistSongsRequest finalRequest = request;
-        assertThrows(IllegalArgumentException.class, () -> getPlaylistSongsActivity.handleRequest(request, null));
+        assertThrows(IllegalArgumentException.class, () -> getPlaylistSongsActivity2.handleRequest(request, null));
     }
 }

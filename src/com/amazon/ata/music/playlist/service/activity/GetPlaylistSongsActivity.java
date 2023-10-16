@@ -78,7 +78,7 @@ public class GetPlaylistSongsActivity implements RequestHandler<GetPlaylistSongs
                 Collections.shuffle(songModelLinkedList);
             }
             if (getPlaylistSongsRequest.getOrder() == SongOrder.REVERSED) {
-                Collections.shuffle(songModelLinkedList);
+                Collections.reverse(songModelLinkedList);
             }
 //            try {
 //                SongOrder.valueOf(getPlaylistSongsRequest.getOrder().toString());
